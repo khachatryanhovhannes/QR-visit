@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Mode Colors */
+  --background: #F9FAFB;
+  --card-background: #FFFFFF;
+  --primary-text: #111827;
+  --secondary-text: #6B7280;
+  --accent: #2563EB;
+  --accent-hover: #1D4ED8;
+  --border: #E5E7EB;
+  --success: #10B981;
+  --error: #EF4444;
+}
+
+.dark {
+  /* Dark Mode Colors */
+  --background: #0F172A;
+  --card-background: #1E293B;
+  --primary-text: #F1F5F9;
+  --secondary-text: #94A3B8;
+  --accent: #3B82F6;
+  --accent-hover: #60A5FA;
+  --border: #334155;
+  --success: #34D399;
+  --error: #F87171;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--primary-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add cursor pointer to all interactive elements */
+button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"] {
+  cursor: pointer;
+}
+
+/* Dark mode specific styles */
+.dark {
+  color-scheme: dark;
+}
+
+/* Improved scrollbar for dark mode */
+.dark ::-webkit-scrollbar-track {
+  background: var(--border);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--secondary-text);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-text);
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-text);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-text);
+}
+
+/* Focus styles */
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent), 0 0 0 4px var(--background);
+}
+
+/* Header sticky background */
+header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dark header {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(8px)) {
+  header {
+    background-color: #FFFFFF !important;
+  }
+  
+  .dark header {
+    background-color: #1E293B !important;
+  }
+}
+
+/* Card templates base styles */
+.card-template {
+  background-color: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.card-template.classic {
+  text-align: center;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-template.column {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .card-template.column {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card-template.business {
+  background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+}
+
+.dark .card-template.business {
+  background: linear-gradient(to bottom right, #1e3a8a, #1e40af);
+}
+
+/* CTA sections with accent background */
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+
+.dark .bg-accent {
+  background-color: var(--accent) !important;
+}
+
+/* Buttons inside accent sections should have white background */
+.bg-accent button {
+  background-color: white !important;
+  color: var(--accent) !important;
+}
+
+.bg-accent button:hover {
+  background-color: #f3f4f6 !important;
+  color: var(--accent-hover) !important;
+}
+
+/* Dropdown menu should have same background as header */
+[data-radix-popper-content-wrapper] > div {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border) !important;
+}
+
+.dark [data-radix-popper-content-wrapper] > div {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+}
+
+/* All dropdown menu items should have transparent background */
+[data-radix-popper-content-wrapper] [role="menuitem"],
+[data-radix-popper-content-wrapper] [data-radix-dropdown-menu-item] {
+  background-color: transparent !important;
+}
+
+/* All dropdown menu items hover effect */
+[data-radix-popper-content-wrapper] [role="menuitem"]:hover,
+[data-radix-popper-content-wrapper] [data-radix-dropdown-menu-item]:hover {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dark [data-radix-popper-content-wrapper] [role="menuitem"]:hover,
+.dark [data-radix-popper-content-wrapper] [data-radix-dropdown-menu-item]:hover {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+}
