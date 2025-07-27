@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+import Image from 'next/image';
 import { UserProfile } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -85,9 +87,11 @@ export function PublicProfile({ profile }: PublicProfileProps) {
         <div className="flex justify-center mb-6">
           <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden shadow-lg">
             {profile.avatarUrl ? (
-              <img 
+              <Image 
                 src={profile.avatarUrl} 
                 alt={profile.fullName} 
+                width={128}
+                height={128}
                 className="w-full h-full object-cover" 
               />
             ) : (
@@ -276,9 +280,11 @@ export function PublicProfile({ profile }: PublicProfileProps) {
             <CardContent className="p-6 text-center">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Share This Profile</h2>
               <div className="inline-block p-4 bg-white rounded-xl shadow-inner border-2 border-gray-100">
-                <img 
+                <Image 
                   src={profile.qrCodeUrl} 
                   alt="QR Code" 
+                  width={160}
+                  height={160}
                   className="w-40 h-40 mx-auto"
                 />
               </div>
@@ -301,9 +307,11 @@ export function PublicProfile({ profile }: PublicProfileProps) {
                 {/* Avatar */}
                 <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden shadow-lg mx-auto mb-6">
                   {profile.avatarUrl ? (
-                    <img 
+                    <Image 
                       src={profile.avatarUrl} 
                       alt={profile.fullName} 
+                      width={128}
+                      height={128}
                       className="w-full h-full object-cover" 
                     />
                   ) : (
@@ -324,9 +332,11 @@ export function PublicProfile({ profile }: PublicProfileProps) {
                 {/* QR Code in sidebar for column layout */}
                 {profile.qrCodeUrl && (
                   <div className="bg-white p-4 rounded-xl shadow-inner border-2 border-gray-100 mb-6">
-                    <img 
+                    <Image 
                       src={profile.qrCodeUrl} 
                       alt="QR Code" 
+                      width={128}
+                      height={128}
                       className="w-32 h-32 mx-auto"
                     />
                   </div>
@@ -497,12 +507,12 @@ export function PublicProfile({ profile }: PublicProfileProps) {
         <div className="text-center mt-12 pt-8 border-t border-gray-200">
           <p className="text-sm text-gray-500">
             Powered by{' '}
-            <a 
+            <Link 
               href="/" 
               className="text-brandBlue-600 hover:text-brandBlue-700 font-medium"
             >
               QR Visit
-            </a>
+            </Link>
           </p>
         </div>
       </div>

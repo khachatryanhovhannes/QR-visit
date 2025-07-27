@@ -1,4 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
+import { User } from 'firebase/auth';
 
 export type TemplateType = 'classic' | 'column' | 'business';
 
@@ -95,7 +96,7 @@ export const TEMPLATES: { id: TemplateType; name: string; description: string }[
 ];
 
 export interface AuthContextType {
-  user: any | null;
+  user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;

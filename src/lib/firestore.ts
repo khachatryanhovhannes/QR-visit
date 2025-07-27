@@ -103,7 +103,7 @@ export async function updateUserProfile(uid: string, data: Partial<UserFormData>
     const docRef = doc(db, 'users', uid);
     
     // Handle avatar upload if new file provided
-    let updateData: any = { ...data };
+    const updateData: Record<string, unknown> = { ...data };
     if (data.avatar) {
       updateData.avatarUrl = await uploadFile(data.avatar, `avatars/${uid}`);
       delete updateData.avatar;
@@ -115,7 +115,8 @@ export async function updateUserProfile(uid: string, data: Partial<UserFormData>
       updateData.qrCodeUrl = await generateAndUploadQRCode(profileUrl, uid);
     }
 
-    await updateDoc(docRef, updateData);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await updateDoc(docRef, updateData as any);
   } catch (error) {
     console.error('Error updating user profile:', error);
     throw error;

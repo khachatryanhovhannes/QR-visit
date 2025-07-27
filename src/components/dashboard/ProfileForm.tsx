@@ -41,7 +41,6 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     watch,
     reset
   } = useForm<ProfileFormData>({

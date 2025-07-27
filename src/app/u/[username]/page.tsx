@@ -4,13 +4,14 @@ import { getUserProfileByUsername } from '@/lib/firestore';
 import { PublicProfile } from '@/components/profile/PublicProfile';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const profile = await getUserProfileByUsername(params.username);
+  const { username } = await params;
+  const profile = await getUserProfileByUsername(username);
   
   if (!profile) {
     return {
@@ -37,7 +38,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function UserProfilePage({ params }: PageProps) {
-  const profile = await getUserProfileByUsername(params.username);
+  const { username } = await params;
+  const profile = await getUserProfileByUsername(username);
   
   if (!profile) {
     notFound();

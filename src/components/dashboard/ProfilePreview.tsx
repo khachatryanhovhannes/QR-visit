@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { UserProfile } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,9 +39,11 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
         <div className="flex justify-center mb-6">
           <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
             {profile.avatarUrl ? (
-              <img 
+              <Image 
                 src={profile.avatarUrl} 
                 alt={profile.fullName} 
+                width={96}
+                height={96}
                 className="w-full h-full object-cover" 
               />
             ) : (
@@ -181,9 +184,11 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
           <div className="text-center">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">QR Code</h3>
             <div className="inline-block p-4 bg-white rounded-lg shadow-inner">
-              <img 
+              <Image 
                 src={profile.qrCodeUrl} 
                 alt="QR Code" 
+                width={128}
+                height={128}
                 className="w-32 h-32 mx-auto"
               />
             </div>
@@ -208,9 +213,11 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
                 {/* Avatar */}
                 <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mx-auto mb-4">
                   {profile.avatarUrl ? (
-                    <img 
+                    <Image 
                       src={profile.avatarUrl} 
                       alt={profile.fullName} 
+                      width={96}
+                      height={96}
                       className="w-full h-full object-cover" 
                     />
                   ) : (
