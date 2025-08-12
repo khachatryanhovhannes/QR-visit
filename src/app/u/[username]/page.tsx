@@ -45,5 +45,13 @@ export default async function UserProfilePage({ params }: PageProps) {
 
   if (!profile) notFound();
 
-  return <PublicProfile profile={profile} />;
+  // Convert Firestore Timestamp → ISO string or number
+  const plainProfile = {
+    ...profile,
+    createdAt: profile.createdAt
+      ? profile.createdAt.toDate().toISOString()
+      : null,
+  };
+
+  return <PublicProfile profile={plainProfile} />;
 }

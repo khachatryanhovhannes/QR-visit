@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +32,9 @@ import {
   Contact,
   Link as LinkIcon,
   Palette,
+  Lock,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 interface ProfileFormProps {
@@ -40,6 +43,66 @@ interface ProfileFormProps {
 }
 
 const norm = (v: string) => v.trim().toLowerCase();
+
+/** Keep these synced with profileSchema.popularWebsites keys */
+const POPULAR_KEYS = [
+  "twitter",
+  "tiktok",
+  "youtube",
+  "pinterest",
+  "reddit",
+  "whatsapp",
+  "telegram",
+  "discord",
+  "twitch",
+  "snapchat",
+  "threads",
+  "github",
+  "gitlab",
+  "medium",
+  "devto",
+  "stackoverflow",
+  "quora",
+  "spotify",
+  "soundcloud",
+  "appleMusic",
+  "bandcamp",
+  "behance",
+  "dribbble",
+  "artstation",
+  "flickr",
+  "tripadvisor",
+  "researchgate",
+  "kaggle",
+  "coursera",
+  "udemy",
+  "khanacademy",
+  "goodreads",
+  "substack",
+  "patreon",
+  "linktree",
+  "aboutme",
+  "carrd",
+  "wechat",
+  "vkontakte",
+  "yandex",
+  "skype",
+  "zoom",
+  "dropbox",
+  "googleDrive",
+  "adobe",
+  "microsoft",
+  "imdb",
+] as const;
+
+type PopularKey = (typeof POPULAR_KEYS)[number];
+
+const makeEmptyPopular = (): Record<PopularKey, string> =>
+  POPULAR_KEYS.reduce((acc, k) => {
+    // @ts-expect-error index ok
+    acc[k] = "";
+    return acc;
+  }, {} as Record<PopularKey, string>);
 
 export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
   const { user } = useAuth();
@@ -51,6 +114,9 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>("");
   const [originalUsername, setOriginalUsername] = useState<string>("");
+  const [showAllPopular, setShowAllPopular] = useState(false);
+
+  const defaultPopular = useMemo(() => makeEmptyPopular(), []);
 
   const {
     register,
@@ -66,7 +132,9 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
       bio: "",
       template: "classic",
       contact: { email: "", phone: "", address: "" },
-      links: { github: "", linkedin: "", telegram: "", website: "" },
+      // updated links — instagram, facebook, linkedin, website
+      links: { instagram: "", facebook: "", linkedin: "", website: "" },
+      popularWebsites: defaultPopular,
     },
   });
 
@@ -80,18 +148,23 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
         bio: profile.bio ?? "",
         template: profile.template ?? "classic",
         contact: profile.contact ?? { email: "", phone: "", address: "" },
-        links: profile.links ?? {
-          github: "",
-          linkedin: "",
-          telegram: "",
-          website: "",
+        // migrate older profiles safely
+        links: {
+          instagram: profile.links?.instagram ?? "",
+          facebook: profile.links?.facebook ?? "",
+          linkedin: profile.links?.linkedin ?? "",
+          website: profile.links?.website ?? "",
+        },
+        popularWebsites: {
+          ...defaultPopular,
+          ...(profile as any)?.popularWebsites, // keep any existing stored values
         },
       });
       setAvatarPreview(profile.avatarUrl);
       setOriginalUsername(norm(profile.username));
       setUsernameAvailable(true);
     }
-  }, [profile, reset]);
+  }, [profile, reset, defaultPopular]);
 
   useEffect(() => {
     if (!username) return;
@@ -133,7 +206,6 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
   };
 
   const onSubmit = async (data: ProfileFormData) => {
-    console.log("_________________________________");
     if (!user) return;
     setLoading(true);
     try {
@@ -431,7 +503,7 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
         </CardContent>
       </Card>
 
-      {/* Social Links */}
+      {/* Social Links (Main) */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -439,11 +511,12 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
             <span className="text-foreground">Social Links</span>
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Your social media and website links
+            Your primary social media and website links
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Website */}
             <div>
               <label
                 htmlFor="links.website"
@@ -464,6 +537,7 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
               )}
             </div>
 
+            {/* LinkedIn */}
             <div>
               <label
                 htmlFor="links.linkedin"
@@ -484,35 +558,109 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
               )}
             </div>
 
+            {/* Instagram */}
             <div>
               <label
-                htmlFor="links.github"
+                htmlFor="links.instagram"
                 className="block text-sm font-medium text-foreground"
               >
-                GitHub
+                Instagram
               </label>
               <Input
-                {...register("links.github")}
+                {...register("links.instagram")}
                 type="text"
-                placeholder="https://github.com/johndoe"
-                className={errors.links?.github ? "border-red-500" : ""}
+                placeholder="https://instagram.com/yourhandle"
+                className={errors.links?.instagram ? "border-red-500" : ""}
               />
-              {errors.links?.github && (
+              {errors.links?.instagram && (
                 <p className="mt-1 text-sm text-red-600">
-                  {errors.links.github.message}
+                  {errors.links.instagram.message}
                 </p>
               )}
             </div>
 
+            {/* Facebook */}
             <div>
               <label
-                htmlFor="links.telegram"
+                htmlFor="links.facebook"
                 className="block text-sm font-medium text-foreground"
               >
-                Telegram
+                Facebook
               </label>
-              <Input {...register("links.telegram")} placeholder="@johndoe" />
+              <Input
+                {...register("links.facebook")}
+                type="text"
+                placeholder="https://facebook.com/yourprofile"
+                className={errors.links?.facebook ? "border-red-500" : ""}
+              />
+              {errors.links?.facebook && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.links.facebook.message}
+                </p>
+              )}
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Popular Websites (Pro-only, disabled) */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Lock className="h-5 w-5 mr-2" />
+            <span className="text-foreground">Popular Websites</span>
+          </CardTitle>
+          <CardDescription className="text-muted-foreground">
+            Available for <span className="font-medium">Pro</span> users only.
+            These fields are disabled for your plan.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* small helper note */}
+          <div className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">
+            Upgrade to Pro to add more platforms (Twitter, TikTok, YouTube,
+            GitHub, Dribbble, etc.)
+          </div>
+
+          {/* Grid of disabled inputs with See more */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {(showAllPopular ? POPULAR_KEYS : POPULAR_KEYS.slice(0, 8)).map(
+              (k) => (
+                <div key={k}>
+                  <label
+                    htmlFor={`popularWebsites.${k}`}
+                    className="block text-sm font-medium text-foreground capitalize"
+                  >
+                    {formatKeyLabel(k)}
+                  </label>
+                  <Input
+                    {...register(`popularWebsites.${k}` as const)}
+                    type="text"
+                    placeholder="Pro feature — upgrade to unlock"
+                    disabled
+                  />
+                </div>
+              )
+            )}
+          </div>
+
+          <div className="flex justify-start">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowAllPopular((s) => !s)}
+            >
+              {showAllPopular ? (
+                <>
+                  See less <ChevronUp className="ml-2 h-4 w-4" />
+                </>
+              ) : (
+                <>
+                  See more <ChevronDown className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -572,4 +720,12 @@ function removeEmptyFields<T>(obj: T): T {
     return cleaned as T;
   }
   return obj;
+}
+
+function formatKeyLabel(k: string) {
+  // nice labels for inputs (e.g., googleDrive -> Google Drive)
+  return k
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (s) => s.toUpperCase())
+    .replace(/_/g, " ");
 }
