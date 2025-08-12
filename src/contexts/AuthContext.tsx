@@ -7,7 +7,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
 import { auth } from '@/lib/firebase';
 import { AuthContextType } from '@/types';
 
@@ -21,6 +23,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
+    }, (error) => {
+      console.error('Auth state change error:', error);
+      setLoading(false);
     });
 
     return unsubscribe;
@@ -31,8 +36,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
+      const firebaseError = error as FirebaseError;
+      console.error('Sign in error:', firebaseError);
+      throw new Error(firebaseError.message || 'Failed to sign in');
+    } finally {
       setLoading(false);
-      throw error;
     }
   };
 
@@ -41,8 +49,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
+      const firebaseError = error as FirebaseError;
+      console.error('Sign up error:', firebaseError);
+      throw new Error(firebaseError.message || 'Failed to create account');
+    } finally {
       setLoading(false);
-      throw error;
     }
   };
 
@@ -51,8 +62,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await firebaseSignOut(auth);
     } catch (error) {
+      const firebaseError = error as FirebaseError;
+      console.error('Sign out error:', firebaseError);
+      throw new Error(firebaseError.message || 'Failed to sign out');
+    } finally {
       setLoading(false);
-      throw error;
+    }
+  };
+
+  const resetPassword = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      console.error('Password reset error:', firebaseError);
+      throw new Error(firebaseError.message || 'Failed to send password reset email');
     }
   };
 
@@ -62,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signUp,
     signOut,
+    resetPassword,
   };
 
   return (

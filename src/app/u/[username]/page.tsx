@@ -1,35 +1,37 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getUserProfileByUsername } from '@/lib/firestore';
-import { PublicProfile } from '@/components/profile/PublicProfile';
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getUserProfileByUsername } from "@/lib/firestore";
+import { PublicProfile } from "@/components/profile/PublicProfile";
 
 interface PageProps {
-  params: Promise<{
+  params: {
     username: string;
-  }>;
+  };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { username } = await params;
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { username } = params;
   const profile = await getUserProfileByUsername(username);
-  
+
   if (!profile) {
-    return {
-      title: 'Profile Not Found - QR Visit',
-    };
+    return { title: "Profile Not Found - QR Visit" };
   }
 
   return {
     title: `${profile.fullName} - Digital Business Card`,
-    description: profile.bio || `Connect with ${profile.fullName} through their digital business card`,
+    description:
+      profile.bio ||
+      `Connect with ${profile.fullName} through their digital business card`,
     openGraph: {
       title: `${profile.fullName} - Digital Business Card`,
       description: profile.bio || `Connect with ${profile.fullName}`,
       images: profile.avatarUrl ? [profile.avatarUrl] : [],
-      type: 'profile',
+      type: "profile",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: `${profile.fullName} - Digital Business Card`,
       description: profile.bio || `Connect with ${profile.fullName}`,
       images: profile.avatarUrl ? [profile.avatarUrl] : [],
@@ -38,12 +40,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function UserProfilePage({ params }: PageProps) {
-  const { username } = await params;
+  const { username } = params;
   const profile = await getUserProfileByUsername(username);
-  
-  if (!profile) {
-    notFound();
-  }
+
+  if (!profile) notFound();
 
   return <PublicProfile profile={profile} />;
 }
