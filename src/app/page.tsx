@@ -180,199 +180,70 @@ export default function Home() {
                 <CardTitle className="text-2xl font-bold">Free</CardTitle>
                 <div className="mt-4">
                   <span className="text-5xl font-bold text-foreground">$0</span>
-                  <span className="text-lg text-muted-foreground ml-2">
-                    forever
-                  </span>
+                  <span className="text-lg text-muted-foreground ml-2">forever</span>
                 </div>
-                <CardDescription className="text-lg mt-2">
-                  Perfect for individuals getting started with digital
-                  networking
-                </CardDescription>
+                <CardDescription className="text-lg mt-2">Perfect for individuals getting started with digital networking</CardDescription>
               </CardHeader>
               <CardContent className="pb-8">
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Basic contact information (email, phone, address)
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      3 professional templates
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      QR code generation and download
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Up to 4 social links (Website, LinkedIn, GitHub, Telegram)
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">Public profile page</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Mobile-responsive design
-                    </span>
-                  </li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Basic contact information (email, phone, address)</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">3 professional templates</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">QR code generation and download</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Up to 4 social links (Website, LinkedIn, GitHub, Telegram)</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Public profile page</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Mobile-responsive design</span></li>
                 </ul>
-                <Link href="/register" className="block">
-                  <Button className="w-full" size="lg">
-                    Get Started Free
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
+                <Link href="/register" className="block"><Button className="w-full" size="lg">Get Started Free<ArrowRight className="ml-2 h-5 w-5" /></Button></Link>
               </CardContent>
             </Card>
 
             <Card className="relative border-primary/20 shadow-lg">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center shadow-lg">
-                  <Star className="h-4 w-4 mr-1" />
-                  Most Popular
-                </span>
+                <span className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center shadow-lg"><Star className="h-4 w-4 mr-1" />Pro (Beta)</span>
               </div>
               <CardHeader className="text-center pb-8">
-                <CardTitle className="text-2xl font-bold">Premium</CardTitle>
+                <CardTitle className="text-2xl font-bold">Pro (Beta)</CardTitle>
                 <div className="mt-4">
-                  <span className="text-5xl font-bold text-foreground">
-                    $2.99
-                  </span>
-                  <span className="text-lg text-muted-foreground ml-2">
-                    /month
-                  </span>
+                  <span className="text-5xl font-bold text-foreground">Free</span>
+                  <span className="text-lg text-muted-foreground ml-2">during beta</span>
                 </div>
-                <CardDescription className="text-lg mt-2">
-                  For professionals who want advanced features and customization
-                </CardDescription>
+                <CardDescription className="text-lg mt-2">All premium features are unlocked for everyone during beta. No payment required.</CardDescription>
               </CardHeader>
               <CardContent className="pb-8">
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="font-medium text-foreground">
-                      Everything in Free, plus:
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Up to 50 social platforms (Instagram, TikTok, Discord,
-                      etc.)
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Add up to 4 services you offer
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Premium template designs
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Advanced customization options
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Priority customer support
-                    </span>
-                  </li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="font-medium text-foreground">Everything in Free, plus:</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Up to 50 social platforms (Instagram, TikTok, Discord, etc.)</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Add up to 4 services you offer</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Premium template designs</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Advanced customization options</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Priority customer support</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Analytics and insights (coming soon)</span></li>
                 </ul>
-                <Link href="/register" className="block">
-                  <Button className="w-full" size="lg">
-                    Start Premium Trial
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <p className="text-center text-sm text-muted-foreground mt-3">
-                  14-day free trial, then $2.99/month
-                </p>
+                <p className="text-center text-sm text-accent mt-3">Pro is currently free during beta. All features are unlocked for every user.</p>
               </CardContent>
             </Card>
 
-            {/* Enterprise Plan */}
             <Card className="relative border-purple-200 dark:border-purple-800">
               <CardHeader className="text-center pb-8">
                 <CardTitle className="text-2xl font-bold">Enterprise</CardTitle>
                 <div className="mt-4">
-                  <span className="text-5xl font-bold text-foreground">
-                    Custom
-                  </span>
-                  <span className="text-lg text-muted-foreground ml-2">
-                    pricing
-                  </span>
+                  <span className="text-5xl font-bold text-foreground">Custom</span>
+                  <span className="text-lg text-muted-foreground ml-2">pricing</span>
                 </div>
-                <CardDescription className="text-lg mt-2">
-                  For businesses that need unlimited everything and custom
-                  solutions
-                </CardDescription>
+                <CardDescription className="text-lg mt-2">For businesses that need unlimited everything and custom solutions</CardDescription>
               </CardHeader>
               <CardContent className="pb-8">
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="font-medium text-foreground">
-                      Everything in Premium, plus:
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Unlimited social platforms and services
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Unlimited actions and interactions
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Custom design and branding
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Separate custom domain
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">
-                      Dedicated support and service
-                    </span>
-                  </li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="font-medium text-foreground">Everything in Pro, plus:</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Unlimited social platforms and services</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Unlimited actions and interactions</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Custom design and branding</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Separate custom domain</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">Dedicated support and service</span></li>
+                  <li className="flex items-start"><CheckCircle className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /><span className="text-foreground">White-label solutions available</span></li>
                 </ul>
-                <Link href="/contact" className="block">
-                  <Button className="w-full" size="lg">
-                    Contact for Quote
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <p className="text-center text-sm text-muted-foreground mt-3">
-                  Custom pricing based on your needs
-                </p>
+                <Link href="/contact" className="block"><Button className="w-full" size="lg">Contact for Quote<ArrowRight className="ml-2 h-5 w-5" /></Button></Link>
+                <p className="text-center text-sm text-muted-foreground mt-3">Custom pricing based on your needs</p>
               </CardContent>
             </Card>
           </div>

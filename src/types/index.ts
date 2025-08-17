@@ -1,7 +1,17 @@
 import { Timestamp } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 
-export type TemplateType = 'classic' | 'column' | 'business';
+export type TemplateType =
+  | 'classic'
+  | 'column'
+  | 'business'
+  | 'modern'
+  | 'minimal'
+  | 'elegant'
+  | 'creative'
+  | 'portfolio'
+  | 'personal'
+  | 'agency';
 
 export interface ContactInfo {
   email?: string;
@@ -14,6 +24,8 @@ export interface SocialLinks {
   linkedin?: string;
   telegram?: string;
   website?: string;
+  instagram?: string;
+  facebook?: string;
 }
 
 export interface PremiumSocials {
@@ -31,8 +43,8 @@ export interface UserProfile {
   contact: ContactInfo;
   links: SocialLinks;
   premiumSocials?: PremiumSocials;
-  services?: string[]; // Up to 4 listed services (Premium only)
-  isPremium: boolean;
+  services?: { title: string; description?: string }[]; // Up to 4 listed services (Premium only)
+  popularWebsites?: Record<string, string>;
   createdAt: Timestamp;
 }
 
@@ -45,7 +57,8 @@ export interface UserFormData {
   contact: ContactInfo;
   links: SocialLinks;
   premiumSocials?: PremiumSocials;
-  services?: string[];
+  services?: { title: string; description?: string }[];
+  popularWebsites?: Record<string, string>;
 }
 
 // Social platform definitions for premium features
@@ -92,6 +105,41 @@ export const TEMPLATES: { id: TemplateType; name: string; description: string }[
     id: 'business',
     name: 'Business',
     description: 'Corporate style with emphasis on professional information',
+  },
+  {
+    id: 'modern',
+    name: 'Modern',
+    description: 'Trendy layout with bold colors and large headings',
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal',
+    description: 'Simple, clean, and distraction-free design',
+  },
+  {
+    id: 'elegant',
+    name: 'Elegant',
+    description: 'Sophisticated style with refined typography',
+  },
+  {
+    id: 'creative',
+    name: 'Creative',
+    description: 'Playful layout for designers and artists',
+  },
+  {
+    id: 'portfolio',
+    name: 'Portfolio',
+    description: 'Showcase your work and projects visually',
+  },
+  {
+    id: 'personal',
+    name: 'Personal',
+    description: 'Friendly layout for personal branding',
+  },
+  {
+    id: 'agency',
+    name: 'Agency',
+    description: 'Team-focused design for agencies and groups',
   },
 ];
 

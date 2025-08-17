@@ -2,28 +2,28 @@
 
 :root {
   /* Light Mode Colors */
-  --background: #F9FAFB;
-  --card-background: #FFFFFF;
+  --background: #f9fafb;
+  --card-background: #ffffff;
   --primary-text: #111827;
-  --secondary-text: #6B7280;
-  --accent: #2563EB;
-  --accent-hover: #1D4ED8;
-  --border: #E5E7EB;
-  --success: #10B981;
-  --error: #EF4444;
+  --secondary-text: #6b7280;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: #e5e7eb;
+  --success: #10b981;
+  --error: #ef4444;
 }
 
 .dark {
   /* Dark Mode Colors */
-  --background: #0F172A;
-  --card-background: #1E293B;
-  --primary-text: #F1F5F9;
-  --secondary-text: #94A3B8;
-  --accent: #3B82F6;
-  --accent-hover: #60A5FA;
+  --background: #0f172a;
+  --card-background: #1e293b;
+  --primary-text: #f1f5f9;
+  --secondary-text: #94a3b8;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
   --border: #334155;
-  --success: #34D399;
-  --error: #F87171;
+  --success: #34d399;
+  --error: #f87171;
 }
 
 * {
@@ -33,12 +33,17 @@
 body {
   background-color: var(--background);
   color: var(--primary-text);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Add cursor pointer to all interactive elements */
-button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"] {
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
   cursor: pointer;
 }
 
@@ -119,11 +124,11 @@ header {
 /* Fallback for browsers that don't support backdrop-filter */
 @supports not (backdrop-filter: blur(8px)) {
   header {
-    background-color: #FFFFFF !important;
+    background-color: #ffffff !important;
   }
-  
+
   .dark header {
-    background-color: #1E293B !important;
+    background-color: #1e293b !important;
   }
 }
 
@@ -156,14 +161,6 @@ header {
   .card-template.column {
     grid-template-columns: repeat(3, 1fr);
   }
-}
-
-.card-template.business {
-  background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
-}
-
-.dark .card-template.business {
-  background: linear-gradient(to bottom right, #1e3a8a, #1e40af);
 }
 
 /* CTA sections with accent background */
@@ -213,6 +210,8 @@ header {
 }
 
 .dark [data-radix-popper-content-wrapper] [role="menuitem"]:hover,
-.dark [data-radix-popper-content-wrapper] [data-radix-dropdown-menu-item]:hover {
+.dark
+  [data-radix-popper-content-wrapper]
+  [data-radix-dropdown-menu-item]:hover {
   background-color: rgba(30, 41, 59, 0.8) !important;
 }

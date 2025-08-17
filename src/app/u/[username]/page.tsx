@@ -16,7 +16,21 @@ export async function generateMetadata({
   const profile = await getUserProfileByUsername(username);
 
   if (!profile) {
-    return { title: "Profile Not Found - QR Visit" };
+    return {
+      title: "Profile Not Found - QR Visit",
+      description: "This QR Visit profile does not exist.",
+      alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/u/${username}` },
+      openGraph: {
+        title: "Profile Not Found - QR Visit",
+        description: "This QR Visit profile does not exist.",
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/u/${username}`,
+      },
+      twitter: {
+        card: "summary",
+        title: "Profile Not Found - QR Visit",
+        description: "This QR Visit profile does not exist.",
+      },
+    };
   }
 
   return {
@@ -24,10 +38,12 @@ export async function generateMetadata({
     description:
       profile.bio ||
       `Connect with ${profile.fullName} through their digital business card`,
+    alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/u/${profile.username}` },
     openGraph: {
       title: `${profile.fullName} - Digital Business Card`,
       description: profile.bio || `Connect with ${profile.fullName}`,
       images: profile.avatarUrl ? [profile.avatarUrl] : [],
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/u/${profile.username}`,
       type: "profile",
     },
     twitter: {

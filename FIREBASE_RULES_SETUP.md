@@ -6,6 +6,7 @@ Your Firebase integration is working correctly based on the network requests:
 - ✅ Firestore: Active connection established
 - ✅ Storage: QR code uploads working
 
+
 ## Required Security Rules
 
 ### 1. Firestore Security Rules
@@ -16,23 +17,22 @@ Go to your Firebase Console → Firestore Database → Rules and set:
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users can read/write their own profile
+    // Users collection - users can read/write their own profile
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-    
-    // Public profiles can be read by anyone (for username lookups)
-    match /users/{userId} {
+      // Allow public read access for profile pages (needed for public profiles)
+      allow read: if true;
+      // Allow username availability checks (read-only queries)
       allow read: if request.auth != null;
     }
-    
-    // Allow users to check username availability
-    match /users/{document=**} {
-      allow read: if request.auth != null;
+    // Default rule - deny all other access
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
 ```
+
 
 ### 2. Firebase Storage Security Rules
 
@@ -46,16 +46,13 @@ service firebase.storage {
     match /qr-codes/{userId}.png {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
     match /avatars/{userId}/{allPaths=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
     // Public read access for QR codes and avatars (for public profiles)
     match /qr-codes/{allPaths=**} {
       allow read: if true;
     }
-    
     match /avatars/{allPaths=**} {
       allow read: if true;
     }
@@ -63,18 +60,19 @@ service firebase.storage {
 }
 ```
 
+
 ## Deployment Steps
 
 1. **Open Firebase Console**: https://console.firebase.google.com/
 2. **Select your project**: qr-visit-website
 3. **Set Firestore Rules**:
-   - Go to Firestore Database → Rules
-   - Replace the rules with the ones above
-   - Click "Publish"
+  - Go to Firestore Database → Rules
+  - Replace the rules with the ones above
+  - Click "Publish"
 4. **Set Storage Rules**:
-   - Go to Storage → Rules
-   - Replace the rules with the ones above
-   - Click "Publish"
+  - Go to Storage → Rules
+  - Replace the rules with the ones above
+  - Click "Publish"
 
 ## Testing After Rules Deployment
 

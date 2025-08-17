@@ -35,11 +35,14 @@ import {
   Lock,
   ChevronDown,
   ChevronUp,
+  Plus,
 } from "lucide-react";
+import { TemplatePreviewCard } from "@/components/dashboard/TemplatePreviewCard";
+import { ServiceItemEditor } from "@/components/dashboard/ServiceItemEditor";
 
 interface ProfileFormProps {
   profile: UserProfile | null;
-  onUpdate: (profile: UserProfile) => void;
+  onUpdateAction: (profile: UserProfile) => void;
 }
 
 const norm = (v: string) => v.trim().toLowerCase();
@@ -99,12 +102,15 @@ type PopularKey = (typeof POPULAR_KEYS)[number];
 
 const makeEmptyPopular = (): Record<PopularKey, string> =>
   POPULAR_KEYS.reduce((acc, k) => {
-    // @ts-expect-error index ok
     acc[k] = "";
     return acc;
   }, {} as Record<PopularKey, string>);
 
-export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
+export function ProfileForm({ profile, onUpdateAction }: ProfileFormProps) {
+  // Template Picker Dialog state
+  const [showTemplateDialog, setShowTemplateDialog] = useState(false);
+  // Services state
+  const [services, setServices] = useState<{ title: string; description?: string }[]>(Array.isArray(profile?.services) ? profile.services : []);
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(
@@ -123,6 +129,7 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
     reset,
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -132,7 +139,6 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
       bio: "",
       template: "classic",
       contact: { email: "", phone: "", address: "" },
-      // updated links — instagram, facebook, linkedin, website
       links: { instagram: "", facebook: "", linkedin: "", website: "" },
       popularWebsites: defaultPopular,
     },
@@ -148,7 +154,6 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
         bio: profile.bio ?? "",
         template: profile.template ?? "classic",
         contact: profile.contact ?? { email: "", phone: "", address: "" },
-        // migrate older profiles safely
         links: {
           instagram: profile.links?.instagram ?? "",
           facebook: profile.links?.facebook ?? "",
@@ -157,12 +162,13 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
         },
         popularWebsites: {
           ...defaultPopular,
-          ...(profile as any)?.popularWebsites, // keep any existing stored values
+          ...(profile?.popularWebsites ?? {}),
         },
       });
       setAvatarPreview(profile.avatarUrl);
       setOriginalUsername(norm(profile.username));
       setUsernameAvailable(true);
+      setServices(Array.isArray(profile.services) ? profile.services : []);
     }
   }, [profile, reset, defaultPopular]);
 
@@ -213,19 +219,20 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
       const formData: UserFormData = {
         ...cleanedData,
         username: cleanedData.username.trim(),
+        bio: cleanedData.bio ?? "",
+        services,
         ...(avatarFile && { avatar: avatarFile }),
       };
-
       if (profile) {
         await updateUserProfile(user.uid, formData);
         const { getUserProfile } = await import("@/lib/firestore");
         const updatedProfile = await getUserProfile(user.uid);
-        if (updatedProfile) onUpdate(updatedProfile);
+        if (updatedProfile) onUpdateAction(updatedProfile);
       } else {
         await createUserProfile(user.uid, formData);
         const { getUserProfile } = await import("@/lib/firestore");
         const newProfile = await getUserProfile(user.uid);
-        if (newProfile) onUpdate(newProfile);
+        if (newProfile) onUpdateAction(newProfile);
       }
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -405,7 +412,7 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
         </CardContent>
       </Card>
 
-      {/* Template Selection */}
+      {/* Template Picker Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -413,29 +420,84 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
             <span className="text-foreground">Template</span>
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Choose how your business card looks
+            Choose how your business card looks visually
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {TEMPLATES.map((template) => (
-              <label key={template.id} className="cursor-pointer">
-                <input
-                  type="radio"
-                  value={template.id}
-                  {...register("template")}
-                  className="sr-only"
-                />
-                <div className="border-2 border-border rounded-lg p-4 hover:border-accent transition-colors">
-                  <h3 className="font-medium text-foreground mb-1">
-                    {template.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {template.description}
-                  </p>
+          <div className="flex items-center gap-4">
+            <Button type="button" variant="outline" onClick={() => setShowTemplateDialog(true)}>
+              Pick Template
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              Selected: {TEMPLATES.find(t => t.id === watch("template"))?.name || "None"}
+            </span>
+          </div>
+          {/* Dialog/modal for template picker */}
+          {showTemplateDialog && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+              <div className="bg-background rounded-lg shadow-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                <h2 className="text-lg font-semibold mb-4">Choose a Template</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  {TEMPLATES.map((template) => (
+                    <TemplatePreviewCard
+                      key={template.id}
+                      template={template}
+                      selected={watch("template") === template.id}
+                      onClick={() => {
+                        setValue("template", template.id);
+                        setShowTemplateDialog(false);
+                      }}
+                      tabIndex={0}
+                      ariaLabel={`Select ${template.name}`}
+                    />
+                  ))}
                 </div>
-              </label>
+                <div className="flex justify-end">
+                  <Button type="button" variant="secondary" onClick={() => setShowTemplateDialog(false)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+      {/* Services Section (Pro) */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Plus className="h-5 w-5 mr-2" />
+            <span className="text-foreground">Services</span>
+          </CardTitle>
+          <CardDescription className="text-muted-foreground">
+            Showcase your professional services (Pro feature, unlocked during beta)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {services.map((service, idx) => (
+              <ServiceItemEditor
+                key={idx}
+                value={service}
+                index={idx}
+                onChange={val => {
+                  setServices(prev => prev.map((s, i) => i === idx ? val : s));
+                }}
+                onRemove={() => {
+                  setServices(prev => prev.filter((_, i) => i !== idx));
+                }}
+                error={!service.title ? "Title required" : undefined}
+              />
             ))}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setServices(prev => [...prev, { title: "" }])}
+              className="mt-2"
+            >
+              <Plus className="mr-2 h-4 w-4" /> Add Service
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -618,8 +680,8 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
         <CardContent className="space-y-4">
           {/* small helper note */}
           <div className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">
-            Upgrade to Pro to add more platforms (Twitter, TikTok, YouTube,
-            GitHub, Dribbble, etc.)
+            <span className="font-semibold text-accent">Pro is currently free during beta.</span> All platforms are unlocked for every user.
+            {/* TODO: Reinstate billing here */}
           </div>
 
           {/* Grid of disabled inputs with See more */}
@@ -636,8 +698,8 @@ export function ProfileForm({ profile, onUpdate }: ProfileFormProps) {
                   <Input
                     {...register(`popularWebsites.${k}` as const)}
                     type="text"
-                    placeholder="Pro feature — upgrade to unlock"
-                    disabled
+                    placeholder="Add your social link"
+                    // All features unlocked during beta
                   />
                 </div>
               )
@@ -702,7 +764,7 @@ function removeEmptyFields<T>(obj: T): T {
         (item) => item !== "" && item !== null && item !== undefined
       ) as T;
   } else if (typeof obj === "object" && obj !== null) {
-    const cleaned: Record<string, any> = {};
+    const cleaned: { [key: string]: unknown } = {};
     for (const [key, value] of Object.entries(obj)) {
       const cleanedValue = removeEmptyFields(value);
       if (

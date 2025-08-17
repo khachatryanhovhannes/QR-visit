@@ -13,7 +13,7 @@ import { CheckCircle, Star, ArrowRight } from "lucide-react";
 export const metadata: Metadata = {
   title: "Pricing - QR Visit",
   description:
-    "Simple, transparent pricing for QR Visit. Start free and upgrade when you need more features.",
+    "Simple, transparent pricing for QR Visit. All Pro features are free during beta.",
 };
 
 export default function PricingPage() {
@@ -25,8 +25,9 @@ export default function PricingPage() {
             Simple, Transparent Pricing
           </h1>
           <p className="mt-4 text-xl text-muted-foreground max-w-3xl mx-auto">
-            Choose the plan that&apos;s right for you. Start free and upgrade
-            anytime.
+            All features—including Pro—are unlocked for everyone during beta. No payment required.
+            <span className="font-semibold text-accent">Pro is currently free during beta.</span>
+            {/* TODO: Reinstate billing here */}
           </p>
         </div>
 
@@ -81,22 +82,23 @@ export default function PricingPage() {
             </CardContent>
           </Card>
 
-          {/* Premium Plan */}
+          {/* Pro Plan (Beta) */}
           <Card className="relative border-primary/20 shadow-lg">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <span className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center shadow-lg">
                 <Star className="h-4 w-4 mr-1" />
-                Most Popular
+                Pro (Beta)
               </span>
             </div>
             <CardHeader className="text-center pb-8">
-              <CardTitle className="text-2xl font-bold">Premium</CardTitle>
+              <CardTitle className="text-2xl font-bold">Pro (Beta)</CardTitle>
               <div className="mt-4">
-                <span className="text-5xl font-bold text-foreground">$2.99</span>
-                <span className="text-lg text-muted-foreground ml-2">/month</span>
+                <span className="text-5xl font-bold text-foreground">Free</span>
+                <span className="text-lg text-muted-foreground ml-2">during beta</span>
               </div>
               <CardDescription className="text-lg mt-2">
-                For professionals who want advanced features and customization
+                All premium features are unlocked for everyone during beta. No payment required.
+                {/* TODO: Reinstate billing here */}
               </CardDescription>
             </CardHeader>
             <CardContent className="pb-8">
@@ -132,14 +134,8 @@ export default function PricingPage() {
                   <span className="text-foreground">Analytics and insights (coming soon)</span>
                 </li>
               </ul>
-              <Link href="/register" className="block">
-                <Button className="w-full" size="lg">
-                  Start Premium Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <p className="text-center text-sm text-muted-foreground mt-3">
-                14-day free trial, then $2.99/month
+              <p className="text-center text-sm text-accent mt-3">
+                Pro is currently free during beta. All features are unlocked for every user.
               </p>
             </CardContent>
           </Card>
@@ -279,7 +275,7 @@ export default function PricingPage() {
           </h2>
           <p className="text-xl text-primary-foreground/90 mb-6 max-w-2xl mx-auto">
             Join thousands of professionals who trust QR Visit for their digital networking needs. 
-            Start free today and upgrade when you&apos;re ready for more.
+            All Pro features are free during beta. {/* TODO: Reinstate billing here */}
           </p>
           <Link href="/register">
             <Button size="lg" variant="secondary" className="cursor-pointer">

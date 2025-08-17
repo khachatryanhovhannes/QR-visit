@@ -53,7 +53,6 @@ export async function createUserProfile(
       links: data.links || [],
       premiumSocials: data.premiumSocials || [],
       services: data.services || [],
-      isPremium: false,
       createdAt: Timestamp.now(),
     };
 
@@ -95,9 +94,11 @@ export async function updateUserProfile(
       delete updateData.avatar;
     }
 
-    // Default values for arrays/objects on update if provided as undefined
-    if (data.premiumSocials === undefined) updateData.premiumSocials = [];
-    if (data.services === undefined) updateData.services = [];
+  // Default values for arrays/objects on update if provided as undefined
+  if (data.premiumSocials === undefined) updateData.premiumSocials = [];
+  if (data.services === undefined) updateData.services = [];
+  // Remove isPremium field if present
+  if ('isPremium' in updateData) delete updateData.isPremium;
 
     // Remove undefined fields (Firestore doesn't accept undefined)
     Object.keys(updateData).forEach(
@@ -109,7 +110,7 @@ export async function updateUserProfile(
       updateData.qrCodeUrl = await generateAndUploadQRCode(profileUrl, uid);
     }
 
-    await updateDoc(docRef, updateData as any);
+  await updateDoc(docRef, updateData);
   } catch (error) {
     console.error("Error updating user profile:", error);
     throw error;

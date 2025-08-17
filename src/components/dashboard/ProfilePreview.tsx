@@ -40,11 +40,12 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
           {profile.avatarUrl ? (
             <Image
               src={profile.avatarUrl}
-              alt={profile.fullName}
+              alt={`Avatar for ${profile.fullName}`}
               width={96}
               height={96}
-              unoptimized
+              sizes="(max-width: 600px) 96px, 24vw"
               className="w-full h-full object-cover"
+              priority
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -185,14 +186,29 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
             Services
           </h3>
           <div className="flex flex-wrap gap-2">
-            {profile.services.map((service, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 rounded-full text-sm bg-accent/10 text-accent"
-              >
-                {service}
-              </span>
-            ))}
+            {profile.services.map((service, index) => {
+              if (typeof service === "string") {
+                return (
+                  <span
+                    key={index}
+                    className="px-3 py-1 rounded-full text-sm bg-accent/10 text-accent"
+                  >
+                    {service}
+                  </span>
+                );
+              } else if (service && typeof service === "object" && "title" in service) {
+                return (
+                  <span
+                    key={index}
+                    className="px-3 py-1 rounded-full text-sm bg-accent/10 text-accent"
+                    title={service.description || ""}
+                  >
+                    {service.title}
+                  </span>
+                );
+              }
+              return null;
+            })}
           </div>
         </div>
       )}
@@ -206,11 +222,12 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
           <div className="inline-block p-4 rounded-lg shadow-inner border border-border bg-background">
             <Image
               src={profile.qrCodeUrl}
-              alt="QR Code"
+              alt={`QR code for ${profile.fullName}`}
               width={128}
               height={128}
-              unoptimized
+              sizes="(max-width: 600px) 128px, 32vw"
               className="w-32 h-32 mx-auto"
+              priority
             />
           </div>
           <div className="mt-3">
@@ -226,9 +243,11 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
 
   const renderTemplate = () => {
     switch (profile.template) {
+      case "classic":
+        return <div className="card-template classic">{commonContent}</div>;
       case "column":
         return (
-          <div className="card-template column">
+          <div className="card-template column grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
               <div className="text-center">
                 <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border bg-muted">
@@ -260,10 +279,22 @@ export function ProfilePreview({ profile }: ProfilePreviewProps) {
             <div className="md:col-span-2 space-y-4">{commonContent}</div>
           </div>
         );
-
       case "business":
         return <div className="card-template business">{commonContent}</div>;
-
+      case "modern":
+        return <div className="card-template modern bg-gradient-to-r from-accent to-blue-400 p-8 rounded-xl">{commonContent}</div>;
+      case "minimal":
+        return <div className="card-template minimal border-2 border-dashed p-8 rounded-xl">{commonContent}</div>;
+      case "elegant":
+        return <div className="card-template elegant bg-gradient-to-br from-gray-200 to-accent p-8 rounded-xl">{commonContent}</div>;
+      case "creative":
+        return <div className="card-template creative bg-pink-200 p-8 rounded-xl">{commonContent}</div>;
+      case "portfolio":
+        return <div className="card-template portfolio bg-white p-8 rounded-xl border">{commonContent}</div>;
+      case "personal":
+        return <div className="card-template personal bg-green-100 p-8 rounded-xl">{commonContent}</div>;
+      case "agency":
+        return <div className="card-template agency bg-blue-100 p-8 rounded-xl">{commonContent}</div>;
       default:
         return <div className="card-template classic">{commonContent}</div>;
     }

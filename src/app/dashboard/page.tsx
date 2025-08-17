@@ -192,7 +192,7 @@ export default function DashboardPage() {
             </TabsList>
 
             <TabsContent value="profile" className="mt-6">
-              <ProfileForm profile={profile} onUpdate={handleProfileUpdate} />
+              <ProfileForm profile={profile} onUpdateAction={handleProfileUpdate} />
             </TabsContent>
 
             <TabsContent value="preview" className="mt-6">

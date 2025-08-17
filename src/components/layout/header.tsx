@@ -30,12 +30,12 @@ export function Header() {
   };
 
   return (
-    <header className="border-b border-border sticky top-0 z-50">
+  <header className="border-b border-border sticky top-0 z-50" aria-label="Main site header">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 cursor-pointer">
-            <QrCode className="h-8 w-8 text-accent" />
+          <Link href="/" className="flex items-center space-x-2 cursor-pointer" aria-label="Go to homepage">
+            <QrCode className="h-8 w-8 text-accent" aria-label="QR Visit logo" />
             <span className="text-xl font-bold text-primary-text">QR Visit</span>
           </Link>
 
@@ -44,7 +44,7 @@ export function Header() {
             {/* Products Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-secondary-text  transition-colors cursor-pointer">
+                <Button variant="ghost" className="text-secondary-text  transition-colors cursor-pointer" aria-label="Products menu">
                   <Palette className="h-4 w-4 mr-2" />
                   Products
                   <ChevronDown className="h-4 w-4 ml-1" />
@@ -72,7 +72,7 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link href="/pricing" className="text-secondary-text hover:text-primary-text transition-colors cursor-pointer">
+            <Link href="/pricing" className="text-secondary-text hover:text-primary-text transition-colors cursor-pointer" aria-label="Pricing page">
               <DollarSign className="h-4 w-4 mr-1 inline" />
               Pricing
             </Link>
@@ -80,7 +80,7 @@ export function Header() {
             {/* Support Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-secondary-text hover:text-primary-text transition-colors cursor-pointer">
+                <Button variant="ghost" className="text-secondary-text hover:text-primary-text transition-colors cursor-pointer" aria-label="Support menu">
                   <HelpCircle className="h-4 w-4 mr-2" />
                   Support
                   <ChevronDown className="h-4 w-4 ml-1" />
@@ -116,12 +116,12 @@ export function Header() {
             </DropdownMenu>
 
             {/* Theme Toggle */}
-            <ThemeToggle />
+            <ThemeToggle aria-label="Toggle theme" />
             
             {user ? (
               <div className="flex items-center space-x-4">
                 <Link href="/dashboard">
-                  <Button variant="ghost" size="sm" className="cursor-pointer">
+                  <Button variant="ghost" size="sm" className="cursor-pointer" aria-label="Sign in">
                     <User className="h-4 w-4 mr-2" />
                     Dashboard
                   </Button>
@@ -139,7 +139,7 @@ export function Header() {
                   </Button>
                 </Link>
                 <Link href="/register">
-                  <Button size="sm" className="cursor-pointer">
+                  <Button size="sm" className="cursor-pointer" aria-label="Get started">
                     Get Started
                   </Button>
                 </Link>
@@ -149,17 +149,18 @@ export function Header() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            <ThemeToggle />
+            <ThemeToggle aria-label="Toggle theme" />
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="cursor-pointer"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-6 w-6" aria-label="Close menu icon" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-6 w-6" aria-label="Open menu icon" />
               )}
             </Button>
           </div>

@@ -123,12 +123,22 @@ export interface PublicUserProfile {
   avatarUrl?: string;
   bio?: string;
   qrCodeUrl?: string;
-  template?: "classic" | "column" | "business";
+  template?:
+    | "classic"
+    | "column"
+    | "business"
+    | "modern"
+    | "minimal"
+    | "elegant"
+    | "creative"
+    | "portfolio"
+    | "personal"
+    | "agency";
   contact: { email?: string; phone?: string; address?: string };
   links: LinksMain;
   popularWebsites?: PopularWebsites;
   premiumSocials?: PremiumSocials;
-  services?: string[];
+  services?: { title: string; description?: string }[];
 }
 
 // ---- Helpers ----
@@ -404,11 +414,12 @@ export function PublicProfile({ profile }: { profile: PublicUserProfile }) {
           {profile.avatarUrl ? (
             <Image
               src={profile.avatarUrl}
-              alt={profile.fullName}
+              alt={`Avatar for ${profile.fullName}`}
               width={128}
               height={128}
-              unoptimized
+              sizes="(max-width: 600px) 128px, 32vw"
               className="w-full h-full object-cover"
+              priority
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -550,7 +561,12 @@ export function PublicProfile({ profile }: { profile: PublicUserProfile }) {
                   key={index}
                   className="px-4 py-2 rounded-lg font-medium bg-accent/10 text-accent"
                 >
-                  {service}
+                  {service.title}
+                  {service.description && (
+                    <span className="block text-xs text-muted-foreground mt-1">
+                      {service.description}
+                    </span>
+                  )}
                 </span>
               ))}
             </div>
@@ -566,11 +582,12 @@ export function PublicProfile({ profile }: { profile: PublicUserProfile }) {
             <div className="inline-block p-4 rounded-xl shadow-inner border-2 border-border bg-background">
               <Image
                 src={profile.qrCodeUrl}
-                alt="QR Code"
+                alt={`QR code for ${profile.fullName}`}
                 width={160}
                 height={160}
-                unoptimized
+                sizes="(max-width: 600px) 160px, 40vw"
                 className="w-40 h-40 mx-auto"
+                priority
               />
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
@@ -585,55 +602,81 @@ export function PublicProfile({ profile }: { profile: PublicUserProfile }) {
   // Layout variants
   const renderTemplate = () => {
     switch (profile.template) {
+      case "classic":
+        return (
+          <div className="max-w-2xl mx-auto bg-background dark:bg-card rounded-xl shadow-lg border p-8 flex flex-col items-center">
+            {commonContent}
+          </div>
+        );
       case "column":
         return (
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1">
-              <div className="text-center lg:sticky lg:top-8">
-                <div className="w-32 h-32 rounded-full overflow-hidden shadow-lg mx-auto mb-6 border bg-muted">
-                  {profile.avatarUrl ? (
-                    <Image
-                      src={profile.avatarUrl}
-                      alt={profile.fullName}
-                      width={128}
-                      height={128}
-                      unoptimized
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-4xl font-bold text-accent">
-                        {profile.fullName.charAt(0)}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <h1 className="text-2xl font-bold text-foreground mb-3">
-                  {profile.fullName}
-                </h1>
-                {profile.bio && (
-                  <p className="text-muted-foreground mb-6">{profile.bio}</p>
-                )}
-                {profile.qrCodeUrl && (
-                  <div className="p-4 rounded-xl shadow-inner border-2 border-border bg-background mb-6">
-                    <Image
-                      src={profile.qrCodeUrl}
-                      alt="QR Code"
-                      width={128}
-                      height={128}
-                      unoptimized
-                      className="w-32 h-32 mx-auto"
-                    />
-                  </div>
-                )}
-              </div>
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 bg-gradient-to-r from-brandBlue to-brandGray dark:from-brandGray dark:to-brandBlue rounded-xl p-8">
+            <div className="lg:col-span-1 flex flex-col items-center justify-start">
+              {commonContent}
             </div>
-            <div className="lg:col-span-2 space-y-6">{commonContent}</div>
+            <div className="lg:col-span-2 flex flex-col justify-start space-y-6">
+            </div>
           </div>
         );
       case "business":
         return (
-          <div className="card-template business max-w-4xl mx-auto rounded-2xl">
+          <div className="card-template business max-w-4xl mx-auto rounded-2xl border-2 border-brandBlue bg-card dark:bg-background shadow-xl p-8">
+            <div className="w-full h-20 bg-brandBlue rounded-t-xl mb-6 flex items-center justify-center">
+              <span className="text-white text-xl font-bold">Business Profile</span>
+            </div>
+            {commonContent}
+          </div>
+        );
+      case "modern":
+        return (
+          <div className="card-template modern max-w-3xl mx-auto rounded-2xl bg-gradient-to-r from-accent to-blue-400 dark:from-blue-900 dark:to-accent shadow-xl p-8">
+            <div className="mb-6 text-4xl font-extrabold text-white dark:text-accent drop-shadow-lg">{profile.fullName}</div>
+            {commonContent}
+          </div>
+        );
+      case "minimal":
+        return (
+          <div className="card-template minimal max-w-2xl mx-auto border-2 border-dashed border-brandGray rounded-xl bg-background dark:bg-card p-8 shadow-sm flex flex-col items-center">
+            {commonContent}
+          </div>
+        );
+      case "elegant":
+        return (
+          <div className="card-template elegant max-w-3xl mx-auto rounded-2xl bg-gradient-to-br from-gray-200 to-accent dark:from-accent dark:to-gray-900 border-2 border-accent shadow-lg p-8 flex flex-col items-center">
+            <div className="mb-4 text-3xl font-serif text-accent dark:text-background">{profile.fullName}</div>
+            {commonContent}
+          </div>
+        );
+      case "creative":
+        return (
+          <div className="card-template creative max-w-3xl mx-auto rounded-2xl bg-gradient-to-tr from-purple-400 via-pink-200 to-green-200 dark:from-purple-900 dark:via-pink-900 dark:to-green-900 border-2 border-accent shadow-lg p-8 flex flex-col items-center">
+            <div className="w-full flex flex-row gap-4 mb-4">
+              <div className="flex-1 h-4 bg-purple-400 dark:bg-purple-900 rounded-full" />
+              <div className="flex-1 h-4 bg-orange-400 dark:bg-orange-900 rounded-full" />
+              <div className="flex-1 h-4 bg-green-400 dark:bg-green-900 rounded-full" />
+            </div>
+            {commonContent}
+          </div>
+        );
+      case "portfolio":
+        return (
+          <div className="card-template portfolio max-w-3xl mx-auto rounded-2xl bg-background dark:bg-card border-2 border-brandBlue shadow-lg p-8">
+            <div className="mb-6 text-2xl font-bold text-brandBlue dark:text-accent">Portfolio</div>
+            {commonContent}
+          </div>
+        );
+      case "personal":
+        return (
+          <div className="card-template personal max-w-2xl mx-auto rounded-2xl bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900 dark:to-blue-900 border-2 border-accent shadow-lg p-8 flex flex-col items-center">
+            {commonContent}
+          </div>
+        );
+      case "agency":
+        return (
+          <div className="card-template agency max-w-3xl mx-auto rounded-2xl bg-blue-100 dark:bg-blue-900 border-2 border-brandBlue shadow-lg p-8">
+            <div className="w-full h-16 bg-brandBlue rounded-t-xl mb-6 flex items-center justify-center">
+              <span className="text-white text-xl font-bold">Agency Profile</span>
+            </div>
             {commonContent}
           </div>
         );

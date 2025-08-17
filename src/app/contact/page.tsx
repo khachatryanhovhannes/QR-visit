@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { 
   Mail, 
-  MessageSquare, 
   HelpCircle,
   Clock,
   MapPin,
@@ -26,14 +25,6 @@ export default function ContactPage() {
       value: 'support@qrvisit.com',
       action: 'mailto:support@qrvisit.com',
       cta: 'Send Email',
-    },
-    {
-      icon: MessageSquare,
-      title: 'Live Chat',
-      description: 'Chat with our support team in real-time during business hours.',
-      value: 'Available 9 AM - 6 PM EST',
-      action: '#',
-      cta: 'Start Chat',
     },
     {
       icon: HelpCircle,

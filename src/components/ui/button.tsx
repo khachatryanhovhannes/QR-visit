@@ -10,7 +10,7 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
+  ({ className, variant = "default", size = "default", "aria-label": ariaLabel, ...props }, ref) => {
     const getVariantStyles = () => {
       switch (variant) {
         case "default":
@@ -63,6 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         style={getVariantStyles()}
         ref={ref}
+        aria-label={ariaLabel}
         {...props}
       />
     );
